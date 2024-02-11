@@ -26,6 +26,8 @@ public class NavXSwerve extends SwerveIMU
    */
   private Rotation3d offset = new Rotation3d();
 
+  private boolean invertedIMU = false;
+
   /**
    * Constructor for the NavX swerve.
    *
@@ -117,6 +119,11 @@ public class NavXSwerve extends SwerveIMU
     this.offset = offset;
   }
 
+  public void setInverted(boolean invertIMU)
+  {
+    invertedIMU = invertIMU;
+  }
+
   /**
    * Fetch the {@link Rotation3d} from the IMU without any zeroing. Robot relative.
    *
@@ -125,7 +132,7 @@ public class NavXSwerve extends SwerveIMU
   @Override
   public Rotation3d getRawRotation3d()
   {
-    return gyro.getRotation3d();
+    return invertedIMU ? gyro.getRotation3d().unaryMinus() : gyro.getRotation3d();
   }
 
   /**

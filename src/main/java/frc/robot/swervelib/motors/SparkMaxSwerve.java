@@ -44,6 +44,10 @@ public class SparkMaxSwerve extends SwerveMotor
    */
   private boolean               factoryDefaultOccurred = false;
 
+  private Supplier<Double> velocity;
+
+  private Supplier<Double> position;
+
   /**
    * Initialize the swerve motor.
    *
@@ -61,7 +65,8 @@ public class SparkMaxSwerve extends SwerveMotor
     pid = motor.getPIDController();
     pid.setFeedbackDevice(
         encoder); // Configure feedback of the PID controller as the integrated encoder.
-
+    velocity = encoder::getVelocity;
+    position = encoder::getPosition;
     // Spin off configurations in a different thread.
     // configureSparkMax(() -> motor.setCANTimeout(0)); // Commented out because it prevents feedback.
   }
@@ -190,6 +195,8 @@ public class SparkMaxSwerve extends SwerveMotor
           false);
       absoluteEncoder = encoder;
       configureSparkMax(() -> pid.setFeedbackDevice((MotorFeedbackSensor) absoluteEncoder.getAbsoluteEncoder()));
+      velocity = absoluteEncoder::getVelocity;
+      position = absoluteEncoder::getAbsolutePosition;
     }
     return this;
   }
@@ -391,7 +398,15 @@ public class SparkMaxSwerve extends SwerveMotor
   {
     setReference(setpoint, feedforward);
   }
+  @Override 
+  public double getVoltage() {
+    return motor.getAppliedOutput() * motor.getBusVoltage();
+  }
 
+  @Override
+  public void setVoltage(double voltage) {
+    motor.setVoltage(voltage);
+  }
   /**
    * Get the velocity of the integrated encoder.
    *

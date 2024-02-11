@@ -101,6 +101,9 @@ public abstract class SwerveMotor
    */
   public abstract void setReference(double setpoint, double feedforward, double position);
 
+  public abstract double getVoltage(); 
+
+  public abstract void setVoltage(double voltage);
   /**
    * Get the velocity of the integrated encoder.
    *

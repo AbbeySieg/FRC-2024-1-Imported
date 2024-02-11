@@ -63,6 +63,8 @@ public class SwerveModuleConfiguration
    */
   public String                name;
 
+  public boolean useCosineCompensator;
+
   /**
    * Construct a configuration object for swerve modules.
    *
@@ -95,7 +97,8 @@ public class SwerveModuleConfiguration
       boolean absoluteEncoderInverted,
       boolean driveMotorInverted,
       boolean angleMotorInverted,
-      String name)
+      String name,
+      boolean useCosineCompensator)
   {
     this.driveMotor = driveMotor;
     this.angleMotor = angleMotor;
@@ -110,6 +113,7 @@ public class SwerveModuleConfiguration
     this.velocityPIDF = velocityPIDF;
     this.physicalCharacteristics = physicalCharacteristics;
     this.name = name;
+    this.useCosineCompensator = useCosineCompensator;
   }
 
   /**
@@ -139,7 +143,8 @@ public class SwerveModuleConfiguration
       PIDFConfig anglePIDF,
       PIDFConfig velocityPIDF,
       SwerveModulePhysicalCharacteristics physicalCharacteristics,
-      String name)
+      String name,
+      boolean useCosineCompensator)
   {
     this(
         driveMotor,
@@ -155,7 +160,8 @@ public class SwerveModuleConfiguration
         false,
         false,
         false,
-        name);
+        name,
+        useCosineCompensator);
   }
 
 

@@ -32,7 +32,7 @@ public class ModuleJson
    * {@link swervelib.math.SwerveMath#calculateDegreesPerSteeringRotation(double, double)} for angle motors or
    * {@link swervelib.math.SwerveMath#calculateMetersPerRotation(double, double, double)} for drive motors.
    */
-  public MotorConfigDouble conversionFactor        = new MotorConfigDouble(0, 0);
+  public MotorConfigDouble conversionFactor  = new MotorConfigDouble(0, 0);
   /**
    * Absolute encoder device configuration.
    */
@@ -53,6 +53,8 @@ public class ModuleJson
    * The location of the swerve module from the center of the robot in inches.
    */
   public LocationJson      location;
+
+  public boolean useCosineCompensator = true;
 
   /**
    * Create the swerve module configuration based off of parsed data.
@@ -131,6 +133,7 @@ public class ModuleJson
         absoluteEncoderInverted,
         inverted.drive,
         inverted.angle,
-        name.replaceAll("\\.json", ""));
+        name.replaceAll("\\.json", ""),
+        useCosineCompensator);
   }
 }

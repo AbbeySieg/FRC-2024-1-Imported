@@ -27,6 +27,8 @@ public abstract class SwerveIMU
    */
   public abstract void setOffset(Rotation3d offset);
 
+  public abstract void setInverted(boolean invertIMU);
+
   /**
    * Fetch the {@link Rotation3d} from the IMU without any zeroing. Robot relative.
    *
