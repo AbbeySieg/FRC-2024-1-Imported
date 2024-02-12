@@ -18,12 +18,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.*;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteFieldDrive;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.commands.swervedrive.drivebase.TeleopDrive;
+import frc.robot.commands.swervedrive.shooter.ShooterCommand;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.superstructure.Superstructure;
+
 import java.io.File;
 
 /**
@@ -36,12 +40,23 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/swerve"));
+
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+
+  
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
+
+  
+  public final Superstructure superstructure = new Superstructure(m_shooter, drivebase);
+  
   CommandJoystick driverController = new CommandJoystick(1);
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
+
+  private final ShooterCommand runShooter = new ShooterCommand(m_shooter, 1);
+  private final ShooterCommand stopShooter = new ShooterCommand(m_shooter, 0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -109,7 +124,8 @@ Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
   private void configureBindings()
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
+    new JoystickButton(Constants.secondriver, 6).whileTrue(new ShooterCommand(m_shooter, 1));
+    
     new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
     Commands.deferredProxy(() -> drivebase.driveToPose(
