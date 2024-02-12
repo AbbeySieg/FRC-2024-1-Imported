@@ -28,23 +28,23 @@ public class SwerveParser
   /**
    * Parsed swervedrive.json
    */
-  public static        SwerveDriveJson          swerveDriveJson;
+  public static SwerveDriveJson swerveDriveJson;
   /**
    * Parsed controllerproperties.json
    */
-  public static        ControllerPropertiesJson controllerPropertiesJson;
+  public static ControllerPropertiesJson controllerPropertiesJson;
   /**
    * Parsed modules/pidfproperties.json
    */
-  public static        PIDFPropertiesJson       pidfPropertiesJson;
+  public static PIDFPropertiesJson pidfPropertiesJson;
   /**
    * Parsed modules/physicalproperties.json
    */
-  public static        PhysicalPropertiesJson   physicalPropertiesJson;
+  public static PhysicalPropertiesJson   physicalPropertiesJson;
   /**
    * Array holding the module jsons given in {@link SwerveDriveJson}.
    */
-  public static        ModuleJson[]             moduleJsons;
+  public static ModuleJson[] moduleJsons;
 
   /**
    * Construct a swerve parser. Will throw an error if there is a missing file.
@@ -135,10 +135,12 @@ public class SwerveParser
    */
   public SwerveDrive createSwerveDrive(double maxSpeed)
   {
-    return createSwerveDrive(SwerveMath.createDriveFeedforward(physicalPropertiesJson.optimalVoltage,
-                                                               maxSpeed,
-                                                               physicalPropertiesJson.wheelGripCoefficientOfFriction),
-                             maxSpeed);
+    return createSwerveDrive(
+      SwerveMath.createDriveFeedforward(
+        physicalPropertiesJson.optimalVoltage,
+        maxSpeed,
+        physicalPropertiesJson.wheelGripCoefficientOfFriction),
+        maxSpeed);
   }
 
   /**
@@ -155,14 +157,17 @@ public class SwerveParser
    *                                   {@link SwerveMath#calculateMetersPerRotation(double, double, double)}.
    * @return {@link SwerveDrive} instance.
    */
-  public SwerveDrive createSwerveDrive(double maxSpeed, double angleMotorConversionFactor, double driveMotorConversion)
+  public SwerveDrive createSwerveDrive(
+    double maxSpeed, double angleMotorConversionFactor, double driveMotorConversion)
   {
     physicalPropertiesJson.conversionFactor.angle = angleMotorConversionFactor;
     physicalPropertiesJson.conversionFactor.drive = driveMotorConversion;
-    return createSwerveDrive(SwerveMath.createDriveFeedforward(physicalPropertiesJson.optimalVoltage,
-                                                               maxSpeed,
-                                                               physicalPropertiesJson.wheelGripCoefficientOfFriction),
-                             maxSpeed);
+    return createSwerveDrive(
+      SwerveMath.createDriveFeedforward(
+        physicalPropertiesJson.optimalVoltage,
+        maxSpeed,
+        physicalPropertiesJson.wheelGripCoefficientOfFriction),
+        maxSpeed);
   }
 
   /**
@@ -181,8 +186,11 @@ public class SwerveParser
    *                                   {@link SwerveMath#calculateMetersPerRotation(double, double, double)}.
    * @return {@link SwerveDrive} instance.
    */
-  public SwerveDrive createSwerveDrive(SimpleMotorFeedforward driveFeedforward, double maxSpeed,
-                                       double angleMotorConversionFactor, double driveMotorConversion)
+  public SwerveDrive createSwerveDrive(
+    SimpleMotorFeedforward driveFeedforward, 
+    double maxSpeed,
+    double angleMotorConversionFactor, 
+    double driveMotorConversion)
   {
     physicalPropertiesJson.conversionFactor.angle = angleMotorConversionFactor;
     physicalPropertiesJson.conversionFactor.drive = driveMotorConversion;

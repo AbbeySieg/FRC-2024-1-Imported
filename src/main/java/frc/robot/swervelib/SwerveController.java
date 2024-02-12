@@ -20,23 +20,23 @@ public class SwerveController
   /**
    * PID Controller for the robot heading.
    */
-  public final PIDController                 thetaController; // TODO: Switch to ProfilePIDController
+  public final PIDController thetaController; // TODO: Switch to ProfilePIDController
   /**
    * Last angle as a scalar [-1,1] the robot was set to.
    */
-  public       double                        lastAngleScalar;
+  public  double  lastAngleScalar;
   /**
    * {@link SlewRateLimiter} for movement in the X direction in meters/second.
    */
-  public       SlewRateLimiter               xLimiter     = null;
+  public SlewRateLimiter xLimiter = null;
   /**
    * {@link SlewRateLimiter} for movement in the Y direction in meters/second.
    */
-  public       SlewRateLimiter               yLimiter     = null;
+  public SlewRateLimiter yLimiter = null;
   /**
    * {@link SlewRateLimiter} for angular movement in radians/second.
    */
-  public       SlewRateLimiter               angleLimiter = null;
+  public SlewRateLimiter angleLimiter = null;
 
   /**
    * Construct the SwerveController object which is used for determining the speeds of the robot based on controller
@@ -103,7 +103,11 @@ public class SwerveController
    * @return {@link ChassisSpeeds} which can be sent to th Swerve Drive.
    */
   public ChassisSpeeds getTargetSpeeds(
-      double xInput, double yInput, double angle, double currentHeadingAngleRadians, double maxSpeed)
+      double xInput, 
+      double yInput, 
+      double angle, 
+      double currentHeadingAngleRadians, 
+      double maxSpeed)
   {
     // Convert joystick inputs to m/s by scaling by max linear speed.  Also uses a cubic function
     // to allow for precise control and fast movement.
@@ -155,7 +159,8 @@ public class SwerveController
     // position when stick released).
     double angle =
         withinHypotDeadband(headingX, headingY) ? lastAngleScalar : Math.atan2(headingX, headingY);
-    ChassisSpeeds speeds = getTargetSpeeds(xInput, yInput, angle, currentHeadingAngleRadians, maxSpeed);
+    ChassisSpeeds speeds = 
+    getTargetSpeeds(xInput, yInput, angle, currentHeadingAngleRadians, maxSpeed);
 
     // Used for the position hold feature
     lastAngleScalar = angle;
