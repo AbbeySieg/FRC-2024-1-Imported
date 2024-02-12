@@ -49,7 +49,7 @@ public enum SuperState {
     //public final ClimberState climb;
 
     private SuperState(int idx,  ShooterState shoot){
-        this.idx = idx;
+        this. idx = idx;
        
         this.shoot = shoot;
         
