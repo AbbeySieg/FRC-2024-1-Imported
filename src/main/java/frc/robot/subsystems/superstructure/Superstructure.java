@@ -2,6 +2,7 @@ package frc.robot.subsystems.superstructure;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.pivot.PivotSubsystem;
 //import frc.robot.subsystems.Climber.ClimberSubsystem;
 //import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 //import frc.robot.subsystems.Feeder.FeederSubsystem;
@@ -18,6 +19,7 @@ public class Superstructure {
     public final ShooterSubsystem m_shooter;
    // public final ElevatorSubsystem m_elevator;
     public final SwerveSubsystem m_swerve;
+    public final PivotSubsystem m_pivot;
    // public final LEDSubsystem m_LED;
 
     public SuperState m_prevState = SuperState.SAFE;
@@ -26,17 +28,17 @@ public class Superstructure {
 
 
 
-    public Superstructure( ShooterSubsystem shooter, 
+    public Superstructure( ShooterSubsystem shooter, PivotSubsystem pivot, 
                           SwerveSubsystem swerve) {
        
         m_shooter = shooter;
-        
+        m_pivot = pivot;
         m_swerve = swerve;
         //m_climber.setDefaultCommand(m_climber.setHeight(ClimberSubsystem.ClimberState.RETRACTED.height));
         //m_feeder.setDefaultCommand(m_feeder.runFeeder(FeederSubsystem.FeederState.OFF.power));
         //m_intake.setDefaultCommand(m_intake.positionIntake(IntakeSubsystem.IntakeState.RETRACTED.position));
         m_shooter.setDefaultCommand(m_shooter.shootIt(ShooterSubsystem.ShooterState.OFF.speed));
-        //m_elevator.setDefaultCommand(m_elevator.setAngle(ElevatorSubsystem.ElevatorState.MINANGLE.angle));
+        m_pivot.setDefaultCommand(m_pivot.setAngle(PivotSubsystem.PivotState.MINANGLE.angle));
     }
 
     public Command toState(SuperState state){

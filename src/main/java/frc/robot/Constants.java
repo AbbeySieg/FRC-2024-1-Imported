@@ -58,4 +58,9 @@ public final class Constants
     public static final int rightShooterMotorID = 11;
     public static final int indexerMotorID = 12;
   }
+
+  public static class PivotConstants {
+    public static final int leftpivotID = 13;
+    public static final int rightpivotID = 14;
+  }
 }

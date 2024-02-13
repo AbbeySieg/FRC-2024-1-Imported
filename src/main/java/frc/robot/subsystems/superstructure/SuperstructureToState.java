@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
+import frc.robot.subsystems.pivot.PivotSubsystem;
 //import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -21,13 +21,13 @@ public class SuperstructureToState extends SequentialCommandGroup {
     private BooleanSupplier m_feederWait = () -> true;
     private BooleanSupplier m_intakeWait = () -> true;
     private BooleanSupplier m_shooterWait = () -> true;
-    private BooleanSupplier m_elevatorWait = () -> true;
+    private BooleanSupplier m_pivotWait = () -> true;
     private BooleanSupplier m_swerveWait = () -> true;
     private BooleanSupplier m_climberUntil = () -> false;
     private BooleanSupplier m_feederUntil = () -> false;
     private BooleanSupplier m_intakeUntil = () -> false;
     private BooleanSupplier m_shooterUntil = () -> false;
-    private BooleanSupplier m_elevatorUntil = () -> false;
+    private BooleanSupplier m_pivotUntil = () -> false;
     private BooleanSupplier m_swerveUntil = () -> false;
 
     public SuperstructureToState(Superstructure superstructure,SuperState targetState){
@@ -42,6 +42,8 @@ public class SuperstructureToState extends SequentialCommandGroup {
         //ElevatorSubsystem elevator = superstructure.m_elevator;
         SwerveSubsystem swerve = superstructure.m_swerve;
 
+        PivotSubsystem pivot = superstructure.m_pivot;
+
 
         Command initCmd = Commands.runOnce(() -> m_superstructure.updateState(m_targetState));
 
@@ -49,12 +51,12 @@ public class SuperstructureToState extends SequentialCommandGroup {
 
         Command shooterCmd = Commands.waitUntil(m_shooterWait).andThen(superstructure.m_shooter.shootIt(m_targetState.shoot.speed).until(m_shooterUntil));
         //Command feederCmd = Commands.waitUntil(m_feederWait).andThen(superstructure.m_feeder.runFeeder(m_targetState.feed.power).until(m_feederUntil));
-        //Command elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle).until(m_elevatorUntil));
+        Command pivotCmd = Commands.waitUntil(m_pivotWait).andThen(superstructure.m_pivot.setAngle(m_targetState.pivot.angle).until(m_pivotUntil));
         //Command intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake(m_targetState.intake.position).andThen(superstructure.m_intake.runIntake(1)).until(m_intakeUntil));
         //Command climberCmd = Commands.waitUntil(m_climberWait).andThen(superstructure.m_climber.setHeight(m_targetState.climb.height)).until(m_climberUntil);
 
 
-        ParallelCommandGroup commandGroup = new ParallelCommandGroup(shooterCmd
+        ParallelCommandGroup commandGroup = new ParallelCommandGroup(shooterCmd, pivotCmd
                                                                      
                                                                     );
 
@@ -66,18 +68,18 @@ public class SuperstructureToState extends SequentialCommandGroup {
        // FeederSubsystem feeder = m_superstructure.m_feeder;
        // IntakeSubsystem intake = m_superstructure.m_intake;
         ShooterSubsystem shooter = m_superstructure.m_shooter;
-        //ElevatorSubsystem elevator = m_superstructure.m_elevator;
+        PivotSubsystem pivot = m_superstructure.m_pivot;
 
         if(m_targetState == SuperState.SHOOT_AMP) {
-           m_shooterWait = () ->  (shooter.getSpeed() >= m_targetState.shoot.speed);
+           m_shooterWait = () ->  (pivot.getAngle() >= m_targetState.pivot.angle && shooter.getSpeed() >= m_targetState.shoot.speed);
         }
 
         if(m_targetState == SuperState.SHOOT_SPEAKER) {
-            m_shooterWait = () ->  (shooter.getSpeed() >= m_targetState.shoot.speed);
+            m_shooterWait = () ->  (pivot.getAngle() >= m_targetState.pivot.angle && shooter.getSpeed() >= m_targetState.shoot.speed);
         }
 
         if(m_targetState == SuperState.SHOOT_PROTECTED) {
-            m_shooterWait = () -> (shooter.getSpeed() >= m_targetState.shoot.speed);
+            m_shooterWait = () -> (pivot.getAngle() >= m_targetState.pivot.angle && shooter.getSpeed() >= m_targetState.shoot.speed);
         }
 
        // if (m_targetState == SuperState.SOURCE_INTAKE) {

@@ -4,6 +4,7 @@ package frc.robot.subsystems.superstructure;
 //import frc.robot.subsystems.Intake.IntakeSubsystem.IntakeState;
 //import frc.robot.subsystems.Feeder.FeederSubsystem.FeederState;
 import frc.robot.subsystems.shooter.ShooterSubsystem.ShooterState;
+import frc.robot.subsystems.pivot.PivotSubsystem.PivotState;
 //import frc.robot.subsystems.Climber.ClimberSubsystem.ClimberState;
 
 
@@ -18,27 +19,27 @@ public enum SuperState {
     Climber - RETRACTED/EXTENDED
      */
     SAFE(0,
-         ShooterState.OFF),
+         ShooterState.OFF, PivotState.MINANGLE),
     //GROUND_INTAKE(1,
     //        IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED),
     //SOURCE_INTAKE(2,
           //  IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MAXANGLE, ShooterState.REVERSEDINTAKE, ClimberState.RETRACTED),
     SCORE_AMP_SETUP(3,
-             ShooterState.LOWPOWER),
+             ShooterState.LOWPOWER, PivotState.MINANGLE),
     SCORE_SPEAKER_SETUP(4,
-             ShooterState.MIDPOWER),
+             ShooterState.MIDPOWER, PivotState.MAXANGLE),
     SCORE_STAGE_PROTECTED_SETUP (5,
-           ShooterState.HIGHPOWER),
+           ShooterState.HIGHPOWER, PivotState.MIDANGLE),
     //CLIMB_REACH(6,
     //        IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED),
     SHOOT_AMP(7,
-          ShooterState.LOWPOWER),
+          ShooterState.LOWPOWER, PivotState.MINANGLE),
 
     SHOOT_SPEAKER(8,
-           ShooterState.MIDPOWER),
+           ShooterState.MIDPOWER, PivotState.MAXANGLE),
 
     SHOOT_PROTECTED(9,
-             ShooterState.HIGHPOWER);
+             ShooterState.HIGHPOWER, PivotState.MIDANGLE);
 
     public final int idx;
     //public final IntakeState intake;
@@ -46,12 +47,13 @@ public enum SuperState {
 //
     //public final ElevatorState elevator;
     public final ShooterState shoot;
+    public final PivotState pivot;
     //public final ClimberState climb;
 
-    private SuperState(int idx,  ShooterState shoot){
+    private SuperState(int idx,  ShooterState shoot, PivotState pivot){
         this. idx = idx;
        
         this.shoot = shoot;
-        
+        this.pivot = pivot;
     }
 }
