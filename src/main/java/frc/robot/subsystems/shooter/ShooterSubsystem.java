@@ -1,8 +1,13 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems.shooter;
+
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+
 
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMax;
@@ -34,8 +39,9 @@ public class ShooterSubsystem extends SubsystemBase {
     leftShooterMotor.restoreFactoryDefaults();
     rightShooterMotor.restoreFactoryDefaults();
     indexerMotor.restoreFactoryDefaults();
-    leftShooterMotor.follow(rightShooterMotor);
+    
     rightShooterMotor.setInverted(true);
+    leftShooterMotor.setInverted(false);;
     leftShooterMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
     rightShooterMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
     rightEncoder = rightShooterMotor.getEncoder();
@@ -61,14 +67,25 @@ public class ShooterSubsystem extends SubsystemBase {
     public static final double INTEGRAL_ZONE = 0.0;
   }
 
-  public void shoot(double power){
+  public void shootSpeed(double power){
     rightShooterMotor.set(power);
+    leftShooterMotor.set(power);
+    //indexerMotor.set(power);
+  }
+
+  public void indexerSpeed(double power) {
     indexerMotor.set(power);
   }
 
-  public void stop() {
-    rightShooterMotor.set(0);
+  public void stopIndexer(double speed) {
     indexerMotor.set(0);
+  }
+
+  public void stopShooter() {
+    rightShooterMotor.set(0);
+    leftShooterMotor.set(0);
+    
+
   }
   
   
@@ -87,7 +104,8 @@ public class ShooterSubsystem extends SubsystemBase {
  }
 
  public double getSpeed() {
-  return target_Speed;
+  return rightShooterMotor.get();
+  
  }
 
  public double getPower() {
@@ -95,8 +113,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
  }
 
- public Command shootIt(double targetSpeed) {
-  return run(() -> runPID(targetSpeed));
+ public Command shootIt(double Speed) {
+  return run(() -> runPID(Speed));
  }
 
  public enum ShooterState{
@@ -116,4 +134,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public void ShootIt(double speed) {
+    rightShooterMotor.set(speed);
+    leftShooterMotor.set(speed);
+    indexerMotor.set(speed);
+  }
 }
+
