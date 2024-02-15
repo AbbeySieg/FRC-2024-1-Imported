@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -50,15 +51,15 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   
-  public final Superstructure superstructure = new Superstructure(m_shooter, drivebase);
+ // public final Superstructure superstructure = new Superstructure(m_shooter, drivebase);
   
-  CommandJoystick driverController = new CommandJoystick(1);
-
+  private final Joystick secondriver = new Joystick(1);
+  private final JoystickButton secondriverButton1 = new JoystickButton(secondriver, Constants.OI.kSecondriverButton1);
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
 
-  private final ShooterCommand runShooter = new ShooterCommand(m_shooter, 1);
-  private final ShooterCommand stopShooter = new ShooterCommand(m_shooter, 0);
+ // private final ShooterCommand runShooter = new ShooterCommand(m_shooter, 1);
+ // private final ShooterCommand stopShooter = new ShooterCommand(m_shooter, 0);
 
   private final SetPivotCommand sethighPivot = new SetPivotCommand(m_pivot, 0.9);
 
@@ -129,8 +130,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
   private void configureBindings()
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new JoystickButton(Constants.secondriver, 6).whileTrue(new ShooterCommand(m_shooter, 1));
-    new JoystickButton(Constants.secondriver, 8).whileTrue(new SetPivotCommand(m_pivot, 0.9));
+    secondriverButton1.whileTrue(sethighPivot);
     
     new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));

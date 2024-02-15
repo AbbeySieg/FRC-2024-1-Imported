@@ -4,21 +4,30 @@ import frc.robot.subsystems.pivot.*;;
 
 public class SetPivotCommand extends Command {
     private final PivotSubsystem pivot;
-    private double pivotPower;
+    private double power;
 
-public SetPivotCommand(PivotSubsystem pivot, double pivotPower) {
+public SetPivotCommand(PivotSubsystem pivot, double power) {
     this.pivot = pivot;
-    this.pivotPower = pivotPower;
+    this.power = power;
+    addRequirements(pivot);
 }
 
 @Override
+ public void initialize() {}
+
+@Override
 public void execute() {
-    pivot.changeAngle(pivotPower);
+    pivot.PivotIt(0.4);
+}
+
+@Override
+public void end(boolean interuppted) {
+    pivot.PivotIt(0);
 }
 
 @Override
 public boolean isFinished() {
-    return true;
+    return false;
 }
 }
 

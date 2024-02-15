@@ -60,7 +60,11 @@ public final class Constants
   }
 
   public static class PivotConstants {
-    public static final int leftpivotID = 13;
-    public static final int rightpivotID = 14;
+    public static final int leftpivotID = 11;
+    public static final int rightpivotID = 12;
+  }
+
+  public static class OI {
+    public static final int kSecondriverButton1 = 1;
   }
 }

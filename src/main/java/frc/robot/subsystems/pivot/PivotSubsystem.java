@@ -12,26 +12,27 @@ import frc.robot.subsystems.shooter.ShooterSubsystem.PIDF;
 import java.util.function.DoubleSupplier;
 
 public class PivotSubsystem extends SubsystemBase{
-    private final CANSparkMax leftpivot;
+   // private final CANSparkMax leftpivot;
     private final CANSparkMax rightpivot;
 
     private double targetAngle;
 
     private final SparkPIDController PIDController;
     private final RelativeEncoder rightEncoder;
-    private final RelativeEncoder leftEncoder;
+   // private final RelativeEncoder leftEncoder;
 
 public PivotSubsystem() {
-    leftpivot = new CANSparkMax(Constants.PivotConstants.leftpivotID, CANSparkLowLevel.MotorType.kBrushless);
+   // leftpivot = new CANSparkMax(Constants.PivotConstants.leftpivotID, CANSparkLowLevel.MotorType.kBrushless);
     rightpivot = new CANSparkMax(Constants.PivotConstants.rightpivotID, CANSparkLowLevel.MotorType.kBrushless);
-    leftpivot.restoreFactoryDefaults();
-    rightpivot.restoreFactoryDefaults();
-    leftpivot.follow(rightpivot);
+   // leftpivot.restoreFactoryDefaults();
+   // rightpivot.restoreFactoryDefaults();
+   // leftpivot.follow(rightpivot);
     rightpivot.setInverted(true);
-    leftpivot.setIdleMode(CANSparkMax.IdleMode.kBrake);
+
+  //  leftpivot.setIdleMode(CANSparkMax.IdleMode.kBrake);
     rightpivot.setIdleMode(CANSparkMax.IdleMode.kBrake);
     rightEncoder = rightpivot.getEncoder();
-    leftEncoder = leftpivot.getEncoder();
+   // leftEncoder = leftpivot.getEncoder();
     PIDController = rightpivot.getPIDController();
     PIDController.setFeedbackDevice(rightEncoder);
     set(PIDF.PORPORTION, PIDF.INTEGRAL, PIDF.DERIVATIVE, PIDF.FEEDFORWARD, PIDF.INTEGRAL_ZONE);
@@ -47,7 +48,7 @@ public static class PIDF {
         /**
          * Proportion constant for PID loop
          */
-        public static final double PROPORTION = 0.05;
+        public static final double PORPORTION = 0.05;
         /**
          * Integral constant for PID loop
          */
@@ -62,11 +63,11 @@ public static class PIDF {
         public static final double INTEGRAL_ZONE = 0.0; 
 }
 
-public void changeAngle(double pivotPower) {
-    rightpivot.set(pivotPower);
+public void changeAngle(double power) {
+    rightpivot.set(power);
 }
 
-public void stop() {
+public void stopPivot() {
     rightpivot.set(0);
 }
 
@@ -117,5 +118,9 @@ public enum PivotState {
 @Override
 public void periodic() {
     
+}
+
+public void PivotIt(double power) {
+    rightpivot.set(power);
 }
 }
